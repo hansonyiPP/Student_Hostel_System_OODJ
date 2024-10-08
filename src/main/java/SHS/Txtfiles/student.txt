@@ -1,0 +1,6 @@
+1;Ethan;Ethan Thong;member123@gmail.com;12345;20;MALE;0123790097
+2;ethan2522;Eeeethan thong;ethan@gmail.com;etkz2522;21;MALE;0123790097
+3;hanson123;Hanson Yip;hanson@gmail.com;12345;21;MALE;123456789
+4;john;johnFullName;john@gmail.com;john123;22;MALE;0122322222
+5;thum122;Thum;thum122@gmail.com;thum122;23;MALE;0128890009
+6;Ethan123;Eeeee;ethan@gmail.com;12345;12;MALE;0123790097

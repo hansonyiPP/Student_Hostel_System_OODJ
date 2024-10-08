@@ -1,0 +1,554 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+package main.java.SHS.UI;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
+import javax.swing.JOptionPane;
+import main.java.SHS.Application;
+import main.java.SHS.Student_Hostel_System;
+import main.java.SHS.BookedRoom;
+import main.java.SHS.FileHandlers.FileHandler;
+import main.java.SHS.FileHandlers.FileName;
+import main.java.SHS.FileHandlers.FileRecord;
+import main.java.SHS.Room;
+import main.java.SHS.Services.ApplicationService;
+import main.java.SHS.Services.BookedRoomService;
+import main.java.SHS.Services.RoomService;
+
+/**
+ *
+ * @author User
+ */
+public class UI_BookedRoom extends javax.swing.JFrame {
+    /**
+     * Creates new form UI_BookedRoom
+     */
+    public UI_BookedRoom() {
+        initComponents();
+        
+        BookedRoomService bookedRoomService = BookedRoomService.getBookedRoomService();
+        BookedRoom bookedRoom = bookedRoomService.getLatestBookedRoom(Student_Hostel_System.current_user.getUsername());
+        
+        RoomLbl.setText("Room No : " + bookedRoom.getRoomNumber());
+        TypeLbl.setText("Room Type : " + bookedRoom.getRoomType());
+        FurnishingLbl.setText("Furnishing : " + bookedRoom.getFurnish());
+        RentLbl.setText("Monthly Rent : " + bookedRoom.getPrice());
+        AppIDLbl.setText("Application ID : " + bookedRoom.getApplicationID());
+        PaymentIDLbl.setText("Payment ID : " + bookedRoom.getPaymentID());
+        CDateLbl.setText("Check-in Date : " + bookedRoom.getStartDate());
+        CODateLbl.setText("Check-out Date : " + bookedRoom.getEndDate());
+        StatusLbl.setText("Status : " + bookedRoom.getStatus());
+        
+    }
+    
+    
+        @Override
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
+        if (visible) {
+            refreshData();
+        }
+    }
+    
+    private BookedRoom findBookedRoomByStudentName(String studentName) {
+        BookedRoom bookedRoom = null;
+
+        List<String> lines = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader("src\\main\\java\\SHS\\Txtfiles\\booking.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                lines.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Collections.reverse(lines);
+
+        for (String line : lines) {
+            String[] fields = line.split(";");
+
+            if (fields.length >= 3 && fields[2].equalsIgnoreCase(studentName)) {
+                bookedRoom = createBookedRoomFromFields(fields);
+                break;
+            }
+        }
+
+        return bookedRoom;
+    }
+
+    private BookedRoom createBookedRoomFromFields(String[] fields) {
+        // Assuming the fields order matches the BookedRoom constructor arguments
+        int roomNumber = Integer.parseInt(fields[0]);
+        int floorNumber = Integer.parseInt(fields[1]);
+        String studentName = fields[2];
+        int hostelID = Integer.parseInt(fields[3]);
+        int userID = Integer.parseInt(fields[4]);
+        String startDate = fields[5];
+        String endDate = fields[6];
+        int duration = Integer.parseInt(fields[7]);
+        String status = fields[8];
+        int roomType = Integer.parseInt(fields[9]);
+        String roomTypeName = fields[10];
+        String furnish = fields[11];
+        String bookingType = fields[12];
+        int price = Integer.parseInt(fields[13]);
+
+        return new BookedRoom(roomNumber, floorNumber, studentName, hostelID, userID, startDate, endDate,
+                duration, status, roomType, roomTypeName, furnish, bookingType, price);
+    }
+    
+    private void refreshData() {
+        BookedRoom book = findBookedRoomByStudentName(Student_Hostel_System.current_user.getUsername());
+            RoomLbl.setText("Room No : " + book.getRoomNumber());
+            TypeLbl.setText("Room Type : " + book.getRoomType());
+            FurnishingLbl.setText("Furnishing : " + book.getFurnish());
+            RentLbl.setText("Monthly Rent : " + book.getPrice());
+            AppIDLbl.setText("Application ID : " + book.getApplicationID());
+            PaymentIDLbl.setText("Payment ID : " + book.getPaymentID());
+            CDateLbl.setText("Check-in Date : " + book.getStartDate());
+            CODateLbl.setText("Check-out Date : " + book.getEndDate());
+            StatusLbl.setText("Status : " + book.getStatus());
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        RoomLbl = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        BackBtn = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        CheckOutBtn = new javax.swing.JButton();
+        RenewBtn = new javax.swing.JButton();
+        Refresh = new javax.swing.JButton();
+        TypeLbl = new javax.swing.JLabel();
+        FurnishingLbl = new javax.swing.JLabel();
+        RentLbl = new javax.swing.JLabel();
+        CDateLbl = new javax.swing.JLabel();
+        CODateLbl = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        StatusLbl = new javax.swing.JLabel();
+        AppIDLbl = new javax.swing.JLabel();
+        PaymentIDLbl = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(217, 225, 228));
+
+        RoomLbl.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
+        RoomLbl.setForeground(new java.awt.Color(92, 128, 188));
+        RoomLbl.setText("Room No : ");
+
+        jPanel2.setBackground(new java.awt.Color(92, 128, 188));
+
+        jLabel1.setBackground(new java.awt.Color(92, 128, 188));
+        jLabel1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(217, 225, 228));
+        jLabel1.setText("BOOKED");
+
+        jLabel5.setBackground(new java.awt.Color(92, 128, 188));
+        jLabel5.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 36)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(217, 225, 228));
+        jLabel5.setText("YOUR");
+
+        BackBtn.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
+        BackBtn.setForeground(new java.awt.Color(217, 225, 228));
+        BackBtn.setText("< Back");
+        BackBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BackBtnMouseClicked(evt);
+            }
+        });
+
+        jLabel6.setBackground(new java.awt.Color(92, 128, 188));
+        jLabel6.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 24)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(217, 225, 228));
+        jLabel6.setText("ROOM");
+
+        CheckOutBtn.setBackground(new java.awt.Color(92, 128, 188));
+        CheckOutBtn.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
+        CheckOutBtn.setForeground(new java.awt.Color(217, 225, 228));
+        CheckOutBtn.setText("Check-Out");
+        CheckOutBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CheckOutBtnActionPerformed(evt);
+            }
+        });
+
+        RenewBtn.setBackground(new java.awt.Color(92, 128, 188));
+        RenewBtn.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
+        RenewBtn.setForeground(new java.awt.Color(217, 225, 228));
+        RenewBtn.setText("Renew Booking");
+        RenewBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RenewBtnActionPerformed(evt);
+            }
+        });
+
+        Refresh.setBackground(new java.awt.Color(92, 128, 188));
+        Refresh.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
+        Refresh.setForeground(new java.awt.Color(217, 225, 228));
+        Refresh.setText("Refresh");
+        Refresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RefreshActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(96, 96, 96)
+                        .addComponent(jLabel6))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(70, 70, 70)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(RenewBtn)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addGap(18, 18, 18)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(CheckOutBtn)
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                            .addGap(10, 10, 10)
+                                            .addComponent(Refresh)))))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel5)))))
+                .addContainerGap(80, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(BackBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(BackBtn)
+                .addGap(39, 39, 39)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel6)
+                .addGap(75, 75, 75)
+                .addComponent(RenewBtn)
+                .addGap(18, 18, 18)
+                .addComponent(CheckOutBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Refresh)
+                .addGap(40, 40, 40))
+        );
+
+        TypeLbl.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
+        TypeLbl.setForeground(new java.awt.Color(92, 128, 188));
+        TypeLbl.setText("Room Type : ");
+
+        FurnishingLbl.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
+        FurnishingLbl.setForeground(new java.awt.Color(92, 128, 188));
+        FurnishingLbl.setText("Furnishing : ");
+
+        RentLbl.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
+        RentLbl.setForeground(new java.awt.Color(92, 128, 188));
+        RentLbl.setText("Monthly Rent : ");
+
+        CDateLbl.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
+        CDateLbl.setForeground(new java.awt.Color(92, 128, 188));
+        CDateLbl.setText("Check-in Date : ");
+
+        CODateLbl.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
+        CODateLbl.setForeground(new java.awt.Color(92, 128, 188));
+        CODateLbl.setText("Check-out Date : ");
+
+        StatusLbl.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
+        StatusLbl.setForeground(new java.awt.Color(92, 128, 188));
+        StatusLbl.setText("Status : ");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(193, Short.MAX_VALUE)
+                .addComponent(StatusLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(121, 121, 121))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addComponent(StatusLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(39, Short.MAX_VALUE))
+        );
+
+        AppIDLbl.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
+        AppIDLbl.setForeground(new java.awt.Color(92, 128, 188));
+        AppIDLbl.setText("Application ID : ");
+
+        PaymentIDLbl.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
+        PaymentIDLbl.setForeground(new java.awt.Color(92, 128, 188));
+        PaymentIDLbl.setText("Payment ID : ");
+
+        jPanel4.setBackground(new java.awt.Color(92, 128, 188));
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 3, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 268, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(CDateLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(CODateLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE))
+                            .addComponent(AppIDLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(RoomLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(FurnishingLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(2, 2, 2)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(PaymentIDLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(RentLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TypeLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(9, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(49, 49, 49)
+                                .addComponent(RoomLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(TypeLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(FurnishingLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(RentLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(AppIDLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(57, 57, 57)
+                                .addComponent(CDateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(CODateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(51, 51, 51))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(PaymentIDLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(56, 56, 56))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(38, 38, 38)))
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(34, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void BackBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BackBtnMouseClicked
+        // Hide the current window
+        this.setVisible(false);
+
+        // ...
+        UI_Rooms s = new UI_Rooms();
+        s.refreshTable(); // Refresh the table data
+        s.setVisible(true);
+        // ...
+    }//GEN-LAST:event_BackBtnMouseClicked
+
+    private void CheckOutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckOutBtnActionPerformed
+        BookedRoomService bookedRoomService = BookedRoomService.getBookedRoomService();
+        BookedRoom bookedRoom = bookedRoomService.getLatestBookedRoom(Student_Hostel_System.current_user.getUsername());
+        
+        if ("Checked Out".equals(bookedRoom.getStatus())) {
+            JOptionPane.showMessageDialog(null, "You have already checked out.", "Check Out", JOptionPane.WARNING_MESSAGE);
+            return; // Stop further processing
+        }
+        
+        if ("Evicted".equals(bookedRoom.getStatus())) {
+            JOptionPane.showMessageDialog(null, "You have been evicted. Can't check out.", "Check Out", JOptionPane.WARNING_MESSAGE);
+            return; // Stop further processing
+        }
+
+        ApplicationService applicationService = new ApplicationService();
+        Application application = applicationService.getApplication(Student_Hostel_System.current_user.getUsername());
+
+        int confirmDialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to check out? This cannot be undone.", "Check Out Confirmation", JOptionPane.YES_NO_OPTION);
+        if (confirmDialogResult == JOptionPane.YES_OPTION) {
+            applicationService.updateApplication(bookedRoom.getApplicationID(), "Deleted");
+
+            RoomService roomService = RoomService.getRoomService();
+            Room room = roomService.getRoom(bookedRoom.getRoomNumber());
+            roomService.updateRoom(room, "Available");
+            
+            // Create a new booked room record with the same details but with status "Checked Out"
+            BookedRoom checkedOutRoom = new BookedRoom(bookedRoom.getBookedRoomID(), bookedRoom.getStudentID(), bookedRoom.getStudentName(),
+                    bookedRoom.getApplicationID(), bookedRoom.getPaymentID(), bookedRoom.getStartDate(), bookedRoom.getEndDate(),
+                    bookedRoom.getLos(), "Checked Out", bookedRoom.getRoomNumber(), bookedRoom.getRoomType(), bookedRoom.getFurnish(),
+                    bookedRoom.getAvailability(), bookedRoom.getPrice());
+
+            bookedRoomService.addBookedRoom(checkedOutRoom);
+            
+            JOptionPane.showMessageDialog(null, "Successfully checked out.", "Checked out", JOptionPane.WARNING_MESSAGE);
+
+            this.setVisible(false);
+
+            UI_Rooms s = new UI_Rooms();
+            s.refreshTable(); // Refresh the table data
+            s.setVisible(true);
+
+        }
+    }//GEN-LAST:event_CheckOutBtnActionPerformed
+
+    private void RenewBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RenewBtnActionPerformed
+        BookedRoomService bookedRoomService = BookedRoomService.getBookedRoomService();
+        BookedRoom bookedRoom = bookedRoomService.getLatestBookedRoom(Student_Hostel_System.current_user.getUsername());
+
+        if ("Expired".equals(bookedRoom.getStatus())) {
+            int confirmDialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to renew your booking?", "Renew Booking Confirmation", JOptionPane.YES_NO_OPTION);
+
+            if (confirmDialogResult == JOptionPane.YES_OPTION) {
+                UI_Booking ub = new UI_Booking(bookedRoom.getRoomNumber(), bookedRoom.getRoomType(), bookedRoom.getFurnish(), "" + bookedRoom.getPrice(), bookedRoom.getEndDate());
+                ub.setVisible(true);
+                this.dispose();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "You have no expired bookings.", "Renew Payment", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_RenewBtnActionPerformed
+
+    private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
+        BookedRoom book = findBookedRoomByStudentName(Student_Hostel_System.current_user.getUsername());
+            RoomLbl.setText("Room No : " + book.getRoomNumber());
+            TypeLbl.setText("Room Type : " + book.getRoomType());
+            FurnishingLbl.setText("Furnishing : " + book.getFurnish());
+            RentLbl.setText("Monthly Rent : " + book.getPrice());
+            AppIDLbl.setText("Application ID : " + book.getApplicationID());
+            PaymentIDLbl.setText("Payment ID : " + book.getPaymentID());
+            CDateLbl.setText("Check-in Date : " + book.getStartDate());
+            CODateLbl.setText("Check-out Date : " + book.getEndDate());
+            StatusLbl.setText("Status : " + book.getStatus());
+        System.out.println("Hi");
+    }//GEN-LAST:event_RefreshActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(UI_BookedRoom.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(UI_BookedRoom.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(UI_BookedRoom.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(UI_BookedRoom.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new UI_BookedRoom().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel AppIDLbl;
+    private javax.swing.JLabel BackBtn;
+    private javax.swing.JLabel CDateLbl;
+    private javax.swing.JLabel CODateLbl;
+    private javax.swing.JButton CheckOutBtn;
+    private javax.swing.JLabel FurnishingLbl;
+    private javax.swing.JLabel PaymentIDLbl;
+    private javax.swing.JButton Refresh;
+    private javax.swing.JButton RenewBtn;
+    private javax.swing.JLabel RentLbl;
+    private javax.swing.JLabel RoomLbl;
+    private javax.swing.JLabel StatusLbl;
+    private javax.swing.JLabel TypeLbl;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    // End of variables declaration//GEN-END:variables
+}
